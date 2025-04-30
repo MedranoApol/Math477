@@ -119,7 +119,7 @@ if __name__ == "__main__":
         F = makepoly(xn,yn)
 
         # Extract co-efficents for polynomial approximate
-        A = np.diagonal(np.array(F)) 
+        A = np.diagonal(F) 
 
         # Evaluate polynomial to interpolate at x
         P = evalpoly(x, xn, A)
@@ -153,7 +153,7 @@ if __name__ == "__main__":
         assert(np.all(np.abs(Fhand- F))<1e-12)
 
         # Extract co-efficents for polynomial approximate
-        A = np.diagonal(np.array(F)) 
+        A = np.diagonal(F) 
         
         # Evaluate polynomial to interpolate at x
         P = evalpoly(x, xn, A)
@@ -210,7 +210,7 @@ if __name__ == "__main__":
     try:
         # Create the co-efficents
         F = makepoly(xn, yn)
-        an = np.diagonal(np.array(F))
+        an = np.diagonal(F)
         
         # Interpolate testing points 
         y_inter = np.array([evalpoly(x, xn, an) for x in x_test])
