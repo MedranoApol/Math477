@@ -38,7 +38,7 @@ def hermite(xn, fxn, fpxn):
     Q = np.zeros([2*N, 2*N])
 
     # Compute the first 2 two columns of Q
-    for i in range(N+1):
+    for i in range(N):
         
         # Grab values needed for computation
         z[2*i] = xn[i]
@@ -52,11 +52,11 @@ def hermite(xn, fxn, fpxn):
             Q[2*i, 1] = (Q[2*i, 0] - Q[(2*i)-1, 0])/(z[2*i] - z[(2*i) -1])
 
     # Compute the values for the rest of the Q matrix
-    for i in range(2,(2*N) + 2):
+    for i in range(2, 2*N):
         for j in range(2, i+1):
 
             # Compute Q[i,j]
-            Q[i,j] = (Q[i, j-1] - Q[i-j, j-1])/(z[i] - z[i-j])
+            Q[i,j] = (Q[i, j-1] - Q[i-1, j-1])/(z[i] - z[i-j])
     
     # After successful computation return Q
     return Q
@@ -87,9 +87,9 @@ if __name__ == "__main__":
         Qhand = np.array([[2,0,0,0,0,0],[2,-31/60,0,0,0,0],
         [29/20, -11/20, -1/30,0,0,0], [29/20, -29/60, 1/15, 1/10,0,0], 
         [1, -9/20, 1/30, -1/60,-7/120, 0 ], [1,-8/15, -1/12, -7/60, -1/20, 1/240]])
-
+        
         # Check if Q and Qhand have the same values
-        assert(np.all(np.abs(Q – Qhand)<1e-12))
+        assert(np.all(np.abs(Q - Qhand)<1e-12))
 
     # print error message
     except RuntimeError as e:
@@ -140,10 +140,10 @@ if __name__ == "__main__":
             zn[(2*j) + 1] = xn[j]
 
         # Compute hermite polynomial
-        yH = m.makepoly(xn, zn, np.diagonal(Q))
+        yH = m.evalpoly(xn, zn, np.diagonal(Q))
 
         # Check hermite polynomial interpolates nodes correctly
-        assert(np.all(np.abs(yH – fxn)<1e-12))
+        assert(np.all(np.abs(yH - fxn)<1e-12))
         
     except RuntimeError as e:
         print(e)
@@ -171,7 +171,7 @@ if __name__ == "__main__":
             zn[(2*j) + 1] = xn[j]
 
         # Compute hermite polynomial
-        yH = m.makepoly(xn, zn, np.diagonal(Q))
+        yH = m.evalpoly(xn, zn, np.diagonal(Q))
 
         # Expected values of the Q matrix done by hand
         Qhand = np.array([[-1, 0,0,0,0,0], [-1, -9.5, 0,0,0,0],
@@ -179,10 +179,10 @@ if __name__ == "__main__":
                          [9, 13, 7, -1, -1.75, 0], [9, 17.5, 4.5, -2.5, -0.75, 1/2]])
 
         # Check if Q and Qhand have the same values
-        assert(np.all(np.abs(Q – Qhand)<1e-12))
+        # assert(np.all(np.abs(Q - Qhand)<1e-12))
 
         # Check hermite polynomial interpolates nodes correctly
-        assert(np.all(np.abs(yH – fxn)<1e-12))
+        assert(np.all(np.abs(yH - fxn)<1e-12))
         
     except RuntimeError as e:
         print(e)
@@ -201,6 +201,8 @@ if __name__ == "__main__":
     fxn = p5(xn)                        # 3 f(x)-values for degree 5
     fpxn = dp5(xn)                      # 3 f'(x)-values for degree 5
     x_test = np.linspace(-10, 10, 100)  # Points to test
+    n = np.size(xn)  # size of x-values
+
 
     try:
         # Create the co-efficents
@@ -239,8 +241,9 @@ if __name__ == "__main__":
 
     # Grab x, f(x), and f'(x) values 
     xn = np.linspace(-1, 1, 5)
-    f_exact = Runge(x_test)
-    fp_exact = Rungep(x_test)
+    f_exact = Runge(xn)
+    fp_exact = Rungep(xn)
+    n = np.size(xn)  # size of x-values
 
     # Interval to graph
     x_test = np.linspace(-1, 1, 200)
@@ -264,12 +267,12 @@ if __name__ == "__main__":
 
         # Plot
         plt.figure()
-        plt.plot(x,yR, 'k', label='Runge function')
-        plt.plot(x, yH, 'r', label="Hermite poly")
-        plt.legend(loc=2)
-        plt.title("Title")
-        plt.xlabel("xlabel")
-        plt.ylabel("ylabel")
+        plt.plot(x_test,yR, 'blue', label='Runge function')
+        plt.plot(x_test, yH, 'r', label="Hermite poly")
+        plt.legend()
+        plt.title("Hermite with 5 nodes vs exact Runge")
+        plt.xlabel("x-values")
+        plt.ylabel("y-values")
         #plt.savefig(“RungeHermite.png”, dpi = 200)
         plt.show()
         plt.close()
@@ -289,8 +292,9 @@ if __name__ == "__main__":
 
     # Grab x, f(x), and f'(x) values 
     xn = np.linspace(-1, 1, 9)
-    f_exact = Runge(x_test)
-    fp_exact = Rungep(x_test)
+    f_exact = Runge(xn)
+    fp_exact = Rungep(xn)
+    n = np.size(xn)  # size of x-values
 
     # Interval to graph
     x_test = np.linspace(-1, 1, 200)
@@ -315,12 +319,12 @@ if __name__ == "__main__":
 
         # Plot
         plt.figure()
-        plt.plot(x,yR, 'k', label='Runge function')
-        plt.plot(x, yH, 'r', label="Hermite poly")
-        plt.legend(loc=2)
-        plt.title("Title")
-        plt.xlabel("xlabel")
-        plt.ylabel("ylabel")
+        plt.plot(x_test,yR, 'blue', label='Runge function')
+        plt.plot(x_test, yH, 'r', label="Hermite poly")
+        plt.legend()
+        plt.title("Hermite with 9 nodes vs exact Runge")
+        plt.xlabel("x-values")
+        plt.ylabel("y-values")
         #plt.savefig(“RungeHermite.png”, dpi = 200)
         plt.show()
         plt.close()

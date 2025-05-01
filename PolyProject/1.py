@@ -160,7 +160,6 @@ if __name__ == "__main__":
         #plt.savefig("", dpi = 200)
         plt.show()
         plt.close()
-
     
     except RuntimeError as e:
         print(e)

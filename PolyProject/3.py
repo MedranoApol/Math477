@@ -43,6 +43,17 @@ if __name__ == "__main__":
         inter_4 = np.array([m.evalpoly(x, x_4, an) for x in x_test])
 
         # Plot P4 against Runge function
+        plt.figure()
+        plt.plot(x_test, inter_4, 'orange', label='degree 4')
+        plt.plot(x_test, y_runge, linestyle=":", color='blue', label="runge function")
+        plt.scatter(x_4, y_4, color='blue', marker="o", label='data nodes')
+        plt.legend()
+        plt.title("degree 4 vs runge function")
+        plt.xlabel("x-values")
+        plt.ylabel("y-values")
+        plt.savefig("degree 4", dpi = 200)
+        plt.show()
+        plt.close()
         
     # Print error message
     except RuntimeError as e:
@@ -66,6 +77,18 @@ if __name__ == "__main__":
         inter_8 = np.array([m.evalpoly(x, x_8, an) for x in x_test])
 
         # Plot P8 against Runge function
+        plt.figure()
+        plt.plot(x_test, inter_8, 'orange', label='degree 8')
+        plt.plot(x_test, y_runge, linestyle=":", color='blue', label="runge function")
+        plt.scatter(x_8, y_8, color='blue', marker="o", label='data nodes')
+        plt.legend()
+        plt.title("degree 8 vs runge function")
+        plt.xlabel("x-values")
+        plt.ylabel("y-values")
+        plt.savefig("degree 8", dpi = 200)
+        plt.show()
+        plt.close()
+
         
     # Print error message
     except RuntimeError as e:
@@ -82,26 +105,42 @@ if __name__ == "__main__":
     # x-values and y-values for degree 4 polynomial
     x_16 = np.linspace(x0, x1, 17 )
     y_16 = runge(x_16)
-
+    
     try:
         # Construct P4
         F = m.makepoly(x_16, y_16)
         an = np.diagonal(F)
-        inter_16 = np.array([m.evalpoly(x, x_16, an) for x in x_test])
+        inter_16 = m.evalpoly(x_test, x_16, an)
 
         # Plot P16 against Runge function
-        
+        plt.figure()
+        plt.plot(x_test, inter_16, 'orange', label='degree 16')
+        plt.plot(x_test, y_runge, linestyle=":", color='blue', label="runge function")
+        plt.scatter(x_16, y_16, color='blue', marker="o", label='data nodes')
+        plt.legend()
+        plt.title("degree 16 vs runge function")
+        plt.xlabel("x-values")
+        plt.ylabel("y-values")
+        plt.savefig("degree 16", dpi = 200)
+        plt.show()
+        plt.close()
+
+        '''
+        ++++++++++++++++++++
+        Task 4: 
+        Plot the relative error between P16 and Runge Function
+        ++++++++++++++++++++
+        '''
+
+        plt.figure()
+        plt.plot(x_test, np.abs(inter_16 - y_runge)/(y_runge), 'red', label='relative error')
+        plt.title("relative error between degree 16 and runge function")
+        plt.xlabel("x-values")
+        plt.ylabel("y-values")
+        plt.savefig("relative error", dpi = 200)
+        plt.show()
+        plt.close()
+ 
     # Print error message
     except RuntimeError as e:
-        print(e)
-
-
-    '''
-    ++++++++++++++++++++
-    Task 4: 
-    Plot the relative error between P16 and Runge Function
-    ++++++++++++++++++++
-    '''
-
-    # Plot
-
+        print(e)    

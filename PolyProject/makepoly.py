@@ -124,8 +124,11 @@ if __name__ == "__main__":
         # Evaluate polynomial to interpolate at x
         P = evalpoly(x, xn, A)
 
-        # Print out successful computation
-        print(f"Section 3.3 Example 1: P{np.size(xn)}({x}) = {P}") 
+        # The interpolated value we computed by hand
+        yHand = 2
+        
+        # Check if it successful computed reasonable values
+        assert(np.all(np.abs(yHand - P)<1e-12))
 
     # prints error message 
     except RuntimeError as e:
@@ -133,7 +136,64 @@ if __name__ == "__main__":
 
     '''
     ++++++++++++++++++++
-    Test 3:
+    Test 3: 
+    Different sizes for x and y-values for makepoly
+    ++++++++++++++++++++
+    '''
+    # x value to approximate
+    x = 4
+    xn = np.array([1, 2, 3]) # x-values 
+    yn = np.array([3,2, 3, 2])  # f(x-values)
+
+    try:
+        # Compute divided difference Matrix F
+        F = makepoly(xn,yn)
+
+        # Extract co-efficents for polynomial approximate
+        A = np.diagonal(F) 
+
+        # Evaluate polynomial to interpolate at x
+        P = evalpoly(x, xn, A)
+        
+        # Check if it successful computed reasonable values
+        assert(np.all(np.abs(yn - P)<1e-12))
+
+    # prints error message 
+    except RuntimeError as e:
+        print(e)
+
+    '''
+    ++++++++++++++++++++
+    Test 4: 
+    Different sizes for x and coefficent-values for evalpoly
+    ++++++++++++++++++++
+    '''
+    # x value to approximate
+    x = 4
+    xn = np.array([1, 2, 3,4]) # x-values 
+    yn = np.array([3,2, 3, 2])  # f(x-values)
+
+    try:
+        # Compute divided difference Matrix F
+        F = makepoly(xn,yn)
+
+        # Extract co-efficents for polynomial approximate
+        A = np.array([1,2]) 
+
+        # Evaluate polynomial to interpolate at x
+        P = evalpoly(x, xn, A)
+        
+        # Check if it successful computed reasonable values
+        assert(np.all(np.abs(yn - P)<1e-12))
+
+    # prints error message 
+    except RuntimeError as e:
+        print(e)
+
+
+    '''
+    ++++++++++++++++++++
+    Test 5:
     Exercise 2 from the Section 3.3 notes
     ++++++++++++++++++++
     '''
@@ -158,8 +218,11 @@ if __name__ == "__main__":
         # Evaluate polynomial to interpolate at x
         P = evalpoly(x, xn, A)
 
-        # Print out successful computation
-        print(f"Section 3.3 Exercise 2: P{np.size(xn)}({x}) = {P}") 
+        # The interpolated value we computed by hand
+        yHand = -6
+
+        # Check if it successful computed reasonable values
+        assert(np.all(np.abs(yHand - P)<1e-12))
 
     # prints error message 
     except RuntimeError as e:
@@ -167,7 +230,7 @@ if __name__ == "__main__":
 
     '''
     ++++++++++++++++++++
-    Test 4: Degree 3
+    Test 6: Degree 3
     P3(x) = 2x^3 - 3x^2 + x - 5 
     ++++++++++++++++++++
     '''
@@ -183,7 +246,7 @@ if __name__ == "__main__":
         an = np.diagonal(np.array(F))
         
         # Interpolate testing points 
-        y_inter = np.array([evalpoly(x, xn, an) for x in x_test])
+        y_inter = evalpoly(x_test, xn, an)
         
         # Compute exact testing points values 
         y_exact = p3(x_test)
@@ -197,7 +260,7 @@ if __name__ == "__main__":
 
     '''
     ++++++++++++++++++++
-    Test 5: Degree 5
+    Test 7: Degree 5
     P5(x) = x^5 - 2x^3 + 3x - 7
     ++++++++++++++++++++
     '''
@@ -213,7 +276,7 @@ if __name__ == "__main__":
         an = np.diagonal(F)
         
         # Interpolate testing points 
-        y_inter = np.array([evalpoly(x, xn, an) for x in x_test])
+        y_inter = evalpoly(x_test, xn, an)
         
         # Compute exact testing points values 
         y_exact = p5(x_test)
@@ -227,7 +290,7 @@ if __name__ == "__main__":
 
     '''
     ++++++++++++++++++++
-    Test 6: Degree 7
+    Test 8: Degree 7
     P7(x) = -(1/2)x^7 + x^6 - x^5 + x^4 - 2x^2 + 1 
     ++++++++++++++++++++
     '''
