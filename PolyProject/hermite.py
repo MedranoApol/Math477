@@ -115,7 +115,8 @@ if __name__ == "__main__":
         
     # print error message
     except RuntimeError as e:
-        print(e)
+        msg = f"Number of x, f(x), or f'(x) values should agree.  There are 2 x-values, 3 f(x)-values and 3 f'(x)-values"
+        assert str(e) == msg
 
     '''
     ++++++++++++++++++++

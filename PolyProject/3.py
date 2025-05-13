@@ -35,11 +35,17 @@ if __name__ == "__main__":
     # x-values and y-values for degree 4 polynomial
     x_4 = np.linspace(x0, x1, 5)
     y_4 = runge(x_4)
-    
+    inter_4 = []
+
+    print(f"Degree 4 x_4 = {x_4} ")
+    print(f"Degree 4 y_4 = {y_4} ")
+
+
     try:
         # Construct P4
         F = m.makepoly(x_4, y_4)
         an = np.diagonal(F)
+        print(f"Degree 4 a_n = {an}")
         inter_4 = np.array([m.evalpoly(x, x_4, an) for x in x_test])
 
         # Plot P4 against Runge function
@@ -48,10 +54,10 @@ if __name__ == "__main__":
         plt.plot(x_test, y_runge, linestyle=":", color='blue', label="runge function")
         plt.scatter(x_4, y_4, color='blue', marker="o", label='data nodes')
         plt.legend()
-        plt.title("degree 4 vs runge function")
+        plt.title("Degree 4 vs Runge function")
         plt.xlabel("x-values")
         plt.ylabel("y-values")
-        plt.savefig("degree 4", dpi = 200)
+        # plt.savefig("degree 4", dpi = 200)
         plt.show()
         plt.close()
         
@@ -69,6 +75,11 @@ if __name__ == "__main__":
     # x-values and y-values for degree 4 polynomial
     x_8 = np.linspace(x0, x1, 9)
     y_8 = runge(x_8)
+    inter_8 = []
+
+    print(f"Degree 8 x_8 = {x_8} ")
+    print(f"Degree 8 y_8 = {y_8} ")
+
 
     try:
         # Construct P8
@@ -82,10 +93,10 @@ if __name__ == "__main__":
         plt.plot(x_test, y_runge, linestyle=":", color='blue', label="runge function")
         plt.scatter(x_8, y_8, color='blue', marker="o", label='data nodes')
         plt.legend()
-        plt.title("degree 8 vs runge function")
+        plt.title("Degree 8 vs Runge function")
         plt.xlabel("x-values")
         plt.ylabel("y-values")
-        plt.savefig("degree 8", dpi = 200)
+        # plt.savefig("degree 8", dpi = 200)
         plt.show()
         plt.close()
 
@@ -105,6 +116,10 @@ if __name__ == "__main__":
     # x-values and y-values for degree 4 polynomial
     x_16 = np.linspace(x0, x1, 17 )
     y_16 = runge(x_16)
+    inter_16 = []
+    print(f"Degree 16 x_16 = {x_16} ")
+    print(f"Degree 16 y_16 = {y_16} ")
+
     
     try:
         # Construct P4
@@ -118,10 +133,10 @@ if __name__ == "__main__":
         plt.plot(x_test, y_runge, linestyle=":", color='blue', label="runge function")
         plt.scatter(x_16, y_16, color='blue', marker="o", label='data nodes')
         plt.legend()
-        plt.title("degree 16 vs runge function")
+        plt.title("Degree 16 vs Runge function")
         plt.xlabel("x-values")
         plt.ylabel("y-values")
-        plt.savefig("degree 16", dpi = 200)
+        # plt.savefig("degree 16", dpi = 200)
         plt.show()
         plt.close()
 
@@ -134,13 +149,42 @@ if __name__ == "__main__":
 
         plt.figure()
         plt.plot(x_test, np.abs(inter_16 - y_runge)/(y_runge), 'red', label='relative error')
-        plt.title("relative error between degree 16 and runge function")
+        plt.title("Relative Error Between Degree 16 and Runge function")
         plt.xlabel("x-values")
         plt.ylabel("y-values")
-        plt.savefig("relative error", dpi = 200)
+        # plt.savefig("relative error", dpi = 200)
         plt.show()
         plt.close()
  
     # Print error message
     except RuntimeError as e:
         print(e)    
+
+    '''
+    Compund Graph of Degree 4, 8, and 16 polyinomials
+    '''
+    fig = plt.figure()
+    ax_array= fig.subplots(2,2,squeeze=True)
+    ax_array[0,0].scatter(x_4,y_4, label="nodes")
+    ax_array[0,0].plot(x_test,y_runge, color='k', label=r"$(1+25x^2)^{-1}$")
+    ax_array[0,0].plot(x_test, inter_4, "--", color = 'b', label="poly interp d=4")
+    ax_array[0,0].set_title("Degree 4")
+    ax_array[0,1].scatter(x_8,y_8, color="r", label="nodes")
+    ax_array[0,1].plot(x_test,y_runge, color='k', label=r"$(1+25x^2)^{-1}$")
+    ax_array[0,1].plot(x_test, inter_8, "--", color='r', label="poly interp d=8")
+    ax_array[0,1].set_title("Degree 8")
+    ax_array[1,0].scatter(x_16,y_16, color="g", label="nodes")
+    ax_array[1,0].plot(x_test,y_runge, color='k', label=r"$(1+25x^2)^{-1}$")
+    ax_array[1,0].plot(x_test, inter_16, "--", color='g', label="poly interp d=16")
+    ax_array[1,0].set_title("Degree 16")
+    ax_array[1,1].plot(x_test,np.abs(inter_4 - y_runge)/(y_runge), color='b', label=r"absolute error")
+    ax_array[1,1].plot(x_test,np.abs(inter_8 - y_runge)/(y_runge), color='r', label=r"absolute error")
+    ax_array[1,1].plot(x_test,np.abs(inter_16 - y_runge)/(y_runge), color='g', label=r"absolute error")
+    ax_array[1,1].set_title("Relative Error")
+    # fig.savefig("runge_multi.png", dpi=200)
+    plt.show()
+    plt.close()
+
+    '''
+    Compund Graph of Relative Error
+    '''

@@ -160,7 +160,8 @@ if __name__ == "__main__":
 
     # prints error message 
     except RuntimeError as e:
-        print(e)
+        msg = f"Number of x and y values should agree.  There are 3 x-values and 4 y-values."
+        assert str(e) == msg
 
     '''
     ++++++++++++++++++++
@@ -188,7 +189,9 @@ if __name__ == "__main__":
 
     # prints error message 
     except RuntimeError as e:
-        print(e)
+        msg = f"Number of x and a values should agree.  There are 4 x-values and 2 a-values."
+        assert str(e) == msg
+
 
 
     '''

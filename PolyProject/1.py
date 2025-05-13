@@ -18,7 +18,6 @@ if __name__ == "__main__":
 
     # Values to test for the polynomial
     x_test = np.linspace(180, 350, 200)
-
     
     '''
     ++++++++++++++++++++
